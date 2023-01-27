@@ -14,12 +14,18 @@ class AllUserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('id')
     serializer_class = UserSerializer
 
-class AllOrganizationViewSet(viewsets.ModelViewSet):
+class UserViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    #user_id = request.user.id
+    queryset = User.objects.all().order_by('id')
+    serializer_class = UserSerializer
+
+class AllOrganizationsViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
     queryset = Organization.objects.all().order_by('id')
     serializer_class = OrganizationSerializer
 
-class AllEquipmentViewSet(viewsets.ModelViewSet):
+class AllEquipmentsViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
     queryset = Equipment.objects.all().order_by('id')
     serializer_class = EquipmentSerializer

@@ -18,7 +18,13 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         user.save()
         return user
 
+class UserForViewSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model  = User
+        fields = ("id" , "username", "email", "created_at", "updated_at")
+
 class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
+    users = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
     class Meta:
         model  = Organization
         fields = ("id" , "name", "inn", "created_at", "updated_at", "users")
@@ -26,6 +32,8 @@ class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
     
 
 class EquipmentSerializer(serializers.HyperlinkedModelSerializer):
+    #organization = serializers.IntegerField(source='organization.id')
+    organization = serializers.PrimaryKeyRelatedField(queryset=Organization.objects.all())
     class Meta:
         model  = Equipment
         fields = ("id" , "serial", "organization", "created_at", "updated_at")
