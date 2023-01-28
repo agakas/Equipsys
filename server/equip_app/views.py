@@ -1,25 +1,39 @@
 #from django.shortcuts import render
 #from rest_framework import  status
 #from rest_framework.response import Response
-#from rest_framework.decorators import api_view
 #from .models import User, Organization, Equipment
+
+from django.http import HttpResponse, JsonResponse
 from rest_framework import viewsets
-from .serializers import UserSerializer, OrganizationSerializer, EquipmentSerializer
-from .models import User, Organization, Equipment
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.fields import CurrentUserDefault
 from rest_framework.decorators import api_view
 
+from .serializers import UserSerializer, OrganizationSerializer, EquipmentSerializer
+from .models import User, Organization, Equipment
+from .permissions import IsAdminOrAnyoneCanCreate  #создавать может кто угодно, а просматривать только админ
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+#from rest_framework.decorators import api_view
+
 class AllUserViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminOrAnyoneCanCreate]
     queryset = User.objects.all().order_by('id')
     serializer_class = UserSerializer
-    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
+ #   http_method_names = ['get', 'post', 'put', 'patch', 'delete']
 
 class UserViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
-    #user_id = request.user.id
-    queryset = User.objects.all().order_by('id')
+    permission_classes = [IsAdminUser]
+    #queryset = User.objects.filter(id= user.id)
     serializer_class = UserSerializer
+
+    def get_object(self):
+        return self.request.user
+ #   http_method_names = ['get', 'post', 'put', 'patch', 'delete']
+
+@api_view(['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
+def userView(request):
+    permission_classes = [IsAuthenticated]
+    serializer = UserSerializer(request.user)
+    return JsonResponse(serializer.data)
 
 class AllOrganizationsViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]

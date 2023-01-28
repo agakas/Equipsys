@@ -4,11 +4,13 @@ from .models import User, Organization, Equipment
 from django.contrib.auth import update_session_auth_hash
 
 
-#Сделай раздельные сериализаторы чтобы при get не видеть ъэш пароля
+#Сделай раздельные сериализаторы чтобы при get не видеть кэш пароля
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model  = User
         fields = ("id" , "username", "password", "email", "created_at", "updated_at")
+
+        extra_kwargs = {'password': {'write_only': True, 'min_length': 4}}
     def create(self, validated_data):
         user = User(
             username=validated_data['username'],
@@ -25,7 +27,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             instance.save()
 
             password = validated_data.get('password', None)
-
             if password:
                 instance.set_password(password)
                 instance.save()
