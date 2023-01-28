@@ -1,6 +1,7 @@
 from rest_framework import fields, serializers
 from django.contrib.auth.hashers import make_password
 from .models import User, Organization, Equipment
+from django.contrib.auth import update_session_auth_hash
 
 
 #Сделай раздельные сериализаторы чтобы при get не видеть ъэш пароля
@@ -17,6 +18,19 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+    def update(self, instance, validated_data):
+            instance.username = validated_data.get('username', instance.username)
+            instance.email = validated_data.get('email', instance.email)
+            instance.save()
+
+            password = validated_data.get('password', None)
+
+            if password:
+                instance.set_password(password)
+                instance.save()
+            update_session_auth_hash(self.context.get('request'), instance)
+            return instance
 
 class UserForViewSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

@@ -13,6 +13,7 @@ class AllUserViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
     queryset = User.objects.all().order_by('id')
     serializer_class = UserSerializer
+    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
 
 class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
