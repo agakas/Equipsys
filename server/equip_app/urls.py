@@ -10,6 +10,6 @@ router.register(r'equipments', views.AllEquipmentsViewSet) #Всё оборуд�
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('current_user/', views.userView, name = 'user-list'), #получение текущего пользователя, походу это костыль
+    path('current_user/', views.userView, name = 'current_user-list'), #получение текущего пользователя, походу это костыль
     path('current_equipments/organization/<int:organization>', views.EquipmentsOfOrgViewSet.as_view({'get':'list'})) #получаем всё оборудование определённой организации
 ]
