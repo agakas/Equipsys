@@ -20,14 +20,23 @@ class AllUserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
  #   http_method_names = ['get', 'post', 'put', 'patch', 'delete']
 
-class UserViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAdminUser]
-    #queryset = User.objects.filter(id= user.id)
-    serializer_class = UserSerializer
+class AllOrganizationsViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    queryset = Organization.objects.all().order_by('id')
+    serializer_class = OrganizationSerializer
 
-    def get_object(self):
-        return self.request.user
- #   http_method_names = ['get', 'post', 'put', 'patch', 'delete']
+class AllEquipmentsViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    queryset = Equipment.objects.all().order_by('id')
+    serializer_class = EquipmentSerializer
+
+class EquipmentsOfOrgViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = EquipmentSerializer
+
+    def get_queryset(self):
+        organ = self.kwargs['organization']
+        return Equipment.objects.filter(organization=organ)
 
 @api_view(['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
 def userView(request):
@@ -35,12 +44,8 @@ def userView(request):
     serializer = UserSerializer(request.user)
     return JsonResponse(serializer.data)
 
-class AllOrganizationsViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAdminUser]
-    queryset = Organization.objects.all().order_by('id')
-    serializer_class = OrganizationSerializer
-
-class AllEquipmentsViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAdminUser]
-    queryset = Equipment.objects.all().order_by('id')
-    serializer_class = EquipmentSerializer
+def equipmentsView(request):
+    permission_classes = [IsAuthenticated]
+    pk = self.kwargs.get('pk')
+    serializer = EquipmentSerializer(organization)
+    return JsonResponse(serializer.data)
