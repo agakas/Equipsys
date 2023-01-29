@@ -11,5 +11,6 @@ router.register(r'equipments', views.AllEquipmentsViewSet) #Всё оборуд�
 urlpatterns = [
     path('', include(router.urls)),
     path('current_user/', views.userView, name = 'current_user-details'), #получение текущего пользователя, походу это костыль
-    path('current_equipments/organization/<int:organization>', views.EquipmentsOfOrgViewSet.as_view({'get':'list'}), name = 'current_equipment-list') #получаем всё оборудование определённой организации
+    path('current_equipments/organization/<int:organization>', views.EquipmentsOfOrgViewSet.as_view({'get':'list'}), name = 'current_equipment-list'), #получаем всё оборудование определённой организации
+    path('current_organizations/', views.OrganizationsOfUser.as_view({'get':'list'}), name = 'current_organization-list')
 ]

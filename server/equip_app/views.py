@@ -38,14 +38,21 @@ class EquipmentsOfOrgViewSet(viewsets.ModelViewSet):
         organ = self.kwargs['organization']
         return Equipment.objects.filter(organization=organ)
 
+class OrganizationsOfUser(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = OrganizationSerializer
+    def get_queryset(self):
+        user = self.request.user.id
+        return Organization.objects.filter(users=user)
+
 @api_view(['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
 def userView(request):
     permission_classes = [IsAuthenticated]
     serializer = UserSerializer(request.user)
     return JsonResponse(serializer.data)
 
-def equipmentsView(request):
-    permission_classes = [IsAuthenticated]
-    pk = self.kwargs.get('pk')
-    serializer = EquipmentSerializer(organization)
-    return JsonResponse(serializer.data)
+#def equipmentsView(request):
+#    permission_classes = [IsAuthenticated]
+#    pk = self.kwargs.get('pk')
+#    serializer = EquipmentSerializer(organization)
+#    return JsonResponse(serializer.data)
