@@ -3,8 +3,9 @@
 #from rest_framework.response import Response
 #from .models import User, Organization, Equipment
 
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from rest_framework import viewsets
+from django.shortcuts import redirect
 from rest_framework.fields import CurrentUserDefault
 from rest_framework.decorators import api_view
 
@@ -18,6 +19,12 @@ class AllUserViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminOrAnyoneCanCreate]
     queryset = User.objects.all().order_by('id')
     serializer_class = UserSerializer
+
+
+    #предполагаю, что не гуманно и будет препятствовать масштабируемости, но пока лучше не придумал
+    def create(self, request, *args, **kwargs):
+        response = super(AllUserViewSet, self).create(request, *args, **kwargs)
+        return redirect('/api/frontend/')
  #   http_method_names = ['get', 'post', 'put', 'patch', 'delete']
 
 class AllOrganizationsViewSet(viewsets.ModelViewSet):
