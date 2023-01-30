@@ -15,8 +15,18 @@
         <div class="text-center mb-5 text-dark">Made by Sergey Agaka</div>
         <div class="card my-5">
 
-          <form class="card-body cardbody-color p-lg-5" action="http://127.0.0.1:8000/api/auth/login/" method="post">
+          <form class="card-body cardbody-color p-lg-5" action="login" method="post">
             {% csrf_token %}
+
+            {% for message in messages %}
+            {% csrf_token %}
+            <div class="alert alert-danger">
+                <a class="close" href="#" data-dismiss="alert">×</a>
+                  {{ message }}
+            </div>
+            {% endfor %}
+
+
             <div class="mb-3">
               <input type="text" class="form-control" id="login" name="username" placeholder="Логин">
             </div>
@@ -24,7 +34,7 @@
               <input type="password" class="form-control" id="password" name="password" placeholder="Пароль">
             </div>
             <div class="text-center"><button type="submit" class="btn btn-primary px-5 mb-5 w-100">Войти</button></div>
-            <div id="emailHelp" class="form-text text-center mb-2 text-dark">Ещё не зарегистрировались? <a href="http://127.0.0.1:8000/api/frontend/sign_up" class="text-dark fw-bold"> Создать аккаунт</a>
+            <div id="emailHelp" class="form-text text-center mb-2 text-dark">Ещё не зарегистрировались? <a href="/sign_up" class="text-dark fw-bold"> Создать аккаунт</a>
             </div>
           </form>
 

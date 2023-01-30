@@ -13,19 +13,16 @@ from .serializers import UserSerializer, OrganizationSerializer, EquipmentSerial
 from .models import User, Organization, Equipment
 from .permissions import IsAdminOrAnyoneCanCreate  #создавать может кто угодно, а просматривать только админ
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-#from rest_framework.decorators import api_view
 
 class AllUserViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminOrAnyoneCanCreate]
     queryset = User.objects.all().order_by('id')
     serializer_class = UserSerializer
-
-
-    #предполагаю, что не гуманно и будет препятствовать масштабируемости, но пока лучше не придумал
-    def create(self, request, *args, **kwargs):
-        response = super(AllUserViewSet, self).create(request, *args, **kwargs)
-        return redirect('/api/frontend/')
- #   http_method_names = ['get', 'post', 'put', 'patch', 'delete']
+  # УДАЛИТЬ
+  #  def create(self, request, *args, **kwargs):
+  #      response = super(AllUserViewSet, self).create(request, *args, **kwargs)
+  #      return redirect('/api/frontend/') #нужно возвращать код ответа
+  #  http_method_names = ['get', 'post', 'put', 'patch', 'delete']
 
 class AllOrganizationsViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
