@@ -15,8 +15,17 @@
         <div class="text-center mb-5 text-dark">Made by Sergey Agaka</div>
         <div class="card my-5">
 
-          <form class="card-body cardbody-color p-lg-5" target="_top" action="http://127.0.0.1:8000/api/app/users/" method="post">
+          <form class="card-body cardbody-color p-lg-5" target="_top" action="/registration" method="post">
             {% csrf_token %}
+
+            {% for message in messages %}
+            {% csrf_token %}
+            <div class="alert alert-danger">
+                <a class="close" href="#" data-dismiss="alert">×</a>
+                  {{ message }}
+            </div>
+
+            {% endfor %}
             <div class="mb-3">
               <input type="text" class="form-control" id="login" name="username" placeholder="Логин" required>
             </div>

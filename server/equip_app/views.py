@@ -19,8 +19,9 @@ class AllUserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('id')
     serializer_class = UserSerializer
   # УДАЛИТЬ
-  #  def create(self, request, *args, **kwargs):
-  #      response = super(AllUserViewSet, self).create(request, *args, **kwargs)
+    def create(self, request, *args, **kwargs):
+        response = super(AllUserViewSet, self).create(request, *args, **kwargs)
+        return response
   #      return redirect('/api/frontend/') #нужно возвращать код ответа
   #  http_method_names = ['get', 'post', 'put', 'patch', 'delete']
 

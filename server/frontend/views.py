@@ -2,6 +2,9 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib import messages
+import requests
+from rest_framework.status import HTTP_400_BAD_REQUEST
+
 
 # Create your views here.
 #Рендер страницы входа или переход а главную страницу если есть авторизация
@@ -28,7 +31,19 @@ def sign_up(request):
     return render(request, 'frontend/signup.html')
 
 def sign_up_action(request):
-    return True #надо отправить на регистрацию и проверить ошибку
+    if request.method == 'POST':
+        new_username = request.POST.get('username')
+        new_email = request.POST.get('email')
+        new_password = request.POST.get('password')
+
+        post_data = dict(username = new_username, email = new_email, password = new_password)
+        response = requests.post('http://127.0.0.1:8000/api/app/users/', data=post_data)
+
+        if response.status_code == 400:
+            messages.error(request, 'Логин уже существует')
+            return redirect('/sign_up')
+        return redirect('/')
+    return render(request, 'frontend/signup.html')
 
 #Выход из аккаунта
 def log_out(request):
