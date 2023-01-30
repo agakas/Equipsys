@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -47,8 +47,8 @@ def sign_up_action(request):
 
 #Выход из аккаунта
 def log_out(request):
-    log_out(request)
-    return redirect('/')
+    logout(request)
+    return render(request, 'frontend/signin.html')
 
 #для главной страницы пользователя, в случае админа - страницы админа
 def home(request):
