@@ -6,6 +6,8 @@ from django.shortcuts import redirect
 from django.contrib import messages
 import requests
 from django.template.context_processors import csrf
+from django.utils.safestring import SafeString
+
 
 # Create your views here.
 #Рендер страницы входа или переход а главную страницу если есть авторизация
@@ -69,7 +71,6 @@ def sign_up_action(request):
         new_password = request.POST.get('password')
         post_data = dict(username = new_username, email = new_email, password = new_password)
         response = requests.post('http://127.0.0.1:8000/api/app/users/', data=post_data)
-
         if response.status_code == 400:
             messages.error(request, 'Логин уже существует')
             return redirect('/sign_up')
@@ -85,9 +86,13 @@ def log_out(request):
 def home(request):
     print('Куки, которые пришли из браузера')
     cookies_now = {'csrftoken': request.COOKIES.get('csrftoken'), 'sessionid': request.COOKIES.get('sessionid')}
-    print(cookies_now)
-    my_data = requests.get("http://127.0.0.1:8000/api/app/users/", cookies=cookies_now)
-    return HttpResponse(my_data, content_type='application/json')
+    my_data = (requests.get("http://127.0.0.1:8000/api/app/current_user/", cookies=cookies_now)).json()
+    current_data = {'my_data':my_data}
+    print('Гдееее тыыы')
+    print(my_data)
+    print('Гдееееееееее тыыыыыыыыыыы')
+    return render(request, 'frontend/home-user.html', context=current_data)
+    #return HttpResponse(my_data, content_type='application/json')
         #return render(request, 'frontend/home-admin.html', json.dumps(my_data))  #несозданный шаблон
     #return render(request, 'frontend/home-user.html')
 
