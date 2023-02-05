@@ -1,18 +1,12 @@
-#from django.shortcuts import render
-#from rest_framework import  status
-#from rest_framework.response import Response
-#from .models import User, Organization, Equipment
-
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from rest_framework import viewsets
-from django.shortcuts import redirect
-from rest_framework.fields import CurrentUserDefault
+from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
-
 from .serializers import UserSerializer, OrganizationSerializer, EquipmentSerializer
 from .models import User, Organization, Equipment
 from .permissions import IsAdminOrAnyoneCanCreate  #создавать может кто угодно, а просматривать только админ
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, AllowAny
+
 
 class AllUserViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminOrAnyoneCanCreate]
@@ -56,6 +50,26 @@ def userView(request):
     serializer = UserSerializer(request.user)
     return JsonResponse(serializer.data)
 
+#на удаление
+@api_view(['POST'])
+def login_user(request):
+    permission_classes = [AllowAny]
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username,  password=password)
+    if user is not None:
+       login(request, user)
+       if request.user.is_superuser:
+           #Если пользователь является админом, то это посылается в заголовке
+           return HttpResponse("Admin Logged In", headers={'IsAdmin':True}, status=status.HTTP_200_OK)
+       print('Крутяк')
+       return HttpResponse("Logged In", headers={'IsAdmin':False}, status=status.HTTP_200_OK)
+    print('Такое себе')
+    return HttpResponse("Not Logged In", status=status.HTTP_400_BAD_REQUEST)
+
+def log_out(request):
+    logout(request)
+    return HttpResponse("Logged Out", status=status.HTTP_200_OK)
 #def equipmentsView(request):
 #    permission_classes = [IsAuthenticated]
 #    pk = self.kwargs.get('pk')
