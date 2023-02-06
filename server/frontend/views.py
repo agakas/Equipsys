@@ -84,13 +84,24 @@ def log_out(request):
 
 #для главной страницы пользователя, в случае админа - страницы админа
 def home(request):
-    print('Куки, которые пришли из браузера')
     cookies_now = {'csrftoken': request.COOKIES.get('csrftoken'), 'sessionid': request.COOKIES.get('sessionid')}
+    #Информация текущего аккаунта
+
     my_data = (requests.get("http://127.0.0.1:8000/api/app/current_user/", cookies=cookies_now)).json()
-    current_data = {'my_data':my_data}
-    print('Гдееее тыыы')
-    print(my_data)
-    print('Гдееееееееее тыыыыыыыыыыы')
+    current_data = {'my_data': my_data}
+
+    if request.user.is_superuser:
+        users_data = (requests.get("http://127.0.0.1:8000/api/app/users/", cookies=cookies_now)).json()
+        organizations_data = (requests.get("http://127.0.0.1:8000/api/app/organizations/", cookies=cookies_now)).json()
+        return render(request, 'frontend/home-admin.html', context=current_data)
+
+    #информация об организациях пользователя
+    current_organizations_data = (requests.get("http://127.0.0.1:8000/api/app/current_organizations/", cookies=cookies_now)).json()
+    current_data['current_organizations'] = current_organizations_data
+    print(current_data)
+    # print('Гдееее тыыы')
+    # print(my_data)
+    # print('Гдееееееееее тыыыыыыыыыыы')
     return render(request, 'frontend/home-user.html', context=current_data)
     #return HttpResponse(my_data, content_type='application/json')
         #return render(request, 'frontend/home-admin.html', json.dumps(my_data))  #несозданный шаблон

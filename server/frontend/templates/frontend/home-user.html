@@ -30,17 +30,23 @@
         </div>
     </div>
     <h4 class="text-left text-dark mt-5 ml-2">Мои организации</h4>
+
+        {% for org in current_organizations%}
     <div class="card mt-2 ml-2 mr-2 mb-5" style="width: auto;">
         <div class="card-body bg-light">
-            <h5 class="card-title">VK</h5>
+            <h5 class="card-title">{{org.name}}</h5>
             <div class="row">
                 <div class="col"><h6>ИНН:</h6></div>
                 <div class="col"><h6>Дата создания организации:</h6></div>
                 <div class="col"><h6>Дата последнего изменения организации:</h6></div>
                 <div class="w-100"></div>
-                <div class="col">1111111111</div>
-                <div class="col">22.06.2001</div>
-                <div class="col">22.06.2001</div>
+                {% if org.inn == None %}
+                <div class="col">-</div>
+                {% else %}
+                <div class="col">{{org.inn}}</div>
+                {% endif %}
+                <div class="col">{{org.created_at}}</div>
+                <div class="col">{{org.updated_at}}</div>
             </div>
         </div>
         <h4 class="text-left text-dark mt-2 ml-2">Оборудование организации</h4>
@@ -60,74 +66,12 @@
                 <a href="#" class="btn btn-danger">Удалить</a>
             </div>
         </div>
-        <div class="card-body bg-secondary mb-2">
-            <div class="row text-light">
-                <div class="col"><h6>Серийный номер:</h6></div>
-                <div class="col"><h6>Дата внесения оборудования:</h6></div>
-                <div class="col"><h6>Дата последнего изменения оборудования:</h6></div>
-                <div class="w-100"></div>
-                <div class="col">1111111111</div>
-                <div class="col">22.06.2001</div>
-                <div class="col">22.06.2001</div>
-            </div>
-            <div class="mt-3">
-                <a href="#" class="btn btn-primary">Изменить</a>
-                <a href="#" class="btn btn-danger">Удалить</a>
-            </div>
-        </div>
         <div class="mt-3">
-                <a href="#" class="btn btn-success">Добавить</a>
+                <a href="#" class="btn btn-success mb-2">Добавить</a>
         </div>
     </div>
     </div>
-    <div class="card mt-2 ml-2 mr-2" style="width: auto;">
-        <div class="card-body bg-light">
-            <h5 class="card-title">VK</h5>
-            <div class="row">
-                <div class="col"><h6>ИНН:</h6></div>
-                <div class="col"><h6>Дата создания организации:</h6></div>
-                <div class="col"><h6>Дата последнего изменения организации:</h6></div>
-                <div class="w-100"></div>
-                <div class="col">1111111111</div>
-                <div class="col">22.06.2001</div>
-                <div class="col">22.06.2001</div>
-            </div>
-        </div>
-        <h4 class="text-left text-dark mt-2 ml-2">Оборудование организации</h4>
-        <div class="card mt-2 ml-2 mr-2" style="width: auto;">
-        <div class="card-body bg-secondary mb-2">
-            <div class="row text-light">
-                <div class="col"><h6>Серийный номер:</h6></div>
-                <div class="col"><h6>Дата внесения оборудования:</h6></div>
-                <div class="col"><h6>Дата последнего изменения оборудования:</h6></div>
-                <div class="w-100"></div>
-                <div class="col">1111111111</div>
-                <div class="col">22.06.2001</div>
-                <div class="col">22.06.2001</div>
-            </div>
-            <div class="mt-3">
-                <a href="#" class="btn btn-primary">Изменить</a>
-                <a href="#" class="btn btn-danger">Удалить</a>
-            </div>
-        </div>
-        <div class="card-body bg-secondary mb-2">
-            <div class="row text-light">
-                <div class="col"><h6>Серийный номер:</h6></div>
-                <div class="col"><h6>Дата внесения оборудования:</h6></div>
-                <div class="col"><h6>Дата последнего изменения оборудования:</h6></div>
-                <div class="w-100"></div>
-                <div class="col">1111111111</div>
-                <div class="col">22.06.2001</div>
-                <div class="col">22.06.2001</div>
-            </div>
-            <div class="mt-3">
-                <a href="#" class="btn btn-primary">Изменить</a>
-                <a href="#" class="btn btn-danger">Удалить</a>
-            </div>
-        </div>
-    </div>
-    </div>
-  </div>
+    {% endfor %}
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
