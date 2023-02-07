@@ -13,7 +13,7 @@ urlpatterns = [
     path('current_user/', views.userView, name = 'current_user-details'), #получение текущего пользователя, походу это костыль
     path('current_equipments/organization/<int:organization>', views.EquipmentsOfOrgViewSet.as_view({'get':'list'}), name = 'current_equipment-list'), #получаем всё оборудование определённой организации
     path('current_organizations/', views.OrganizationsOfUser.as_view({'get':'list'}), name = 'current_organization-list'),
-
+    path('equip_of_org/', views.EquipsOfOrg.as_view({'get':'list'})),
     path('login_user/', views.login_user),
     path('logout_user/', views.log_out)
 ]

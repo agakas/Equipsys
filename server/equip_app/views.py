@@ -44,11 +44,25 @@ class OrganizationsOfUser(viewsets.ModelViewSet):
         user = self.request.user.id
         return Organization.objects.filter(users=user)
 
+class EquipsOfOrg(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = EquipmentSerializer
+    def get_queryset(self):
+        org = self.request.GET.get('org_id', None)
+        return Equipment.objects.filter(organization=org)
+
+
 @api_view(['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
 def userView(request):
     permission_classes = [IsAuthenticated]
     serializer = UserSerializer(request.user)
     return JsonResponse(serializer.data)
+
+def equipOfOrgView(request, id_org):
+    #permission_classes = [IsAuthenticated]
+    print(id_org)
+    def get_queryset(self):
+        return Equipment.objects.filter(organization=id_org)
 
 #на удаление
 @api_view(['POST'])
