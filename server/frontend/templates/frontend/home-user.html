@@ -51,25 +51,31 @@
         </div>
         <h4 class="text-left text-dark mt-2 ml-2">Оборудование организации</h4>
         <div class="card  mt-2 ml-2 mr-2" style="width: auto;">
+        {% for equipment in org.equipments %}
+
         <div class="card-body bg-secondary mb-2">
             <div class="row text-light">
                 <div class="col"><h6>Серийный номер:</h6></div>
                 <div class="col"><h6>Дата внесения оборудования:</h6></div>
                 <div class="col"><h6>Дата последнего изменения оборудования:</h6></div>
                 <div class="w-100"></div>
-                <div class="col">1111111111</div>
-                <div class="col">22.06.2001</div>
-                <div class="col">22.06.2001</div>
+                <div class="col">{{equipment.serial}}</div>
+                <div class="col">{{equipment.created_at}}</div>
+                <div class="col">{{equipment.updated_at}}</div>
             </div>
             <div class="mt-3">
                 <a href="#" class="btn btn-primary">Изменить</a>
                 <a href="#" class="btn btn-danger">Удалить</a>
             </div>
         </div>
+            {% endfor %}
         <div class="mt-3">
                 <a href="#" class="btn btn-success mb-2">Добавить</a>
         </div>
     </div>
+
+
+
     </div>
     {% endfor %}
 </body>

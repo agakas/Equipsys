@@ -98,7 +98,11 @@ def home(request):
     #информация об организациях пользователя
     current_organizations_data = (requests.get("http://127.0.0.1:8000/api/app/current_organizations/", cookies=cookies_now)).json()
     current_data['current_organizations'] = current_organizations_data
-    print(current_data)
+    #получаем оборудование для всех организаций текущего пользователя
+    for org in current_data['current_organizations']:
+        current_organizations_equipment = (requests.get("http://127.0.0.1:8000/api/app/equip_of_org/?org_id="+str(org['id']), cookies=cookies_now)).json()
+        org['equipments'] = current_organizations_equipment
+
     # print('Гдееее тыыы')
     # print(my_data)
     # print('Гдееееееееее тыыыыыыыыыыы')
