@@ -78,7 +78,6 @@ def home(request):
         for org in current_data['current_organizations']:
             current_organizations_equipment = (requests.get("http://127.0.0.1:8000/api/app/equip_of_org/?org_id="+str(org['id']), cookies=cookies_now)).json()
             org['equipments'] = current_organizations_equipment
-
         # print('Гдееее тыыы')
         # print(my_data)
         # print('Гдееееееееее тыыыыыыыыыыы')
@@ -99,3 +98,11 @@ def delete_current_user(request):
     response = requests.delete("http://127.0.0.1:8000/api/app/users/"+str(id_current_user), cookies=cookies_now, headers=headers)
     print(response.status_code, response.content)
     return redirect('/')
+
+def del_equip(request, equip_id):
+    cookies_now = {'csrftoken': request.COOKIES.get('csrftoken'), 'sessionid': request.COOKIES.get('sessionid')}
+    id_current_equipment = equip_id
+    headers = {}
+    headers['X-CSRFToken'] = cookies_now['csrftoken']
+    response = requests.delete("http://127.0.0.1:8000/api/app/equipments/" + str(id_current_equipment), cookies=cookies_now, headers=headers)
+    return redirect('/main')

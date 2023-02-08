@@ -16,10 +16,6 @@ class AllUserViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         response = super(AllUserViewSet, self).create(request, *args, **kwargs)
         return response
-    # def destroy(self, request, *args, **kwargs):
-    #     response = super(AllUserViewSet, self).destroy(request, *args, **kwargs)
-    #     return response
-    #
 class AllOrganizationsViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Organization.objects.all().order_by('id')
