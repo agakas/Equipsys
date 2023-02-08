@@ -83,7 +83,7 @@ def login_user(request):
 
 def log_out(request):
     logout(request)
-    return HttpResponse("Logged Out", status=status.HTTP_200_OK)
+
 #def equipmentsView(request):
 #    permission_classes = [IsAuthenticated]
 #    pk = self.kwargs.get('pk')
