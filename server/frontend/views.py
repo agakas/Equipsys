@@ -61,8 +61,8 @@ def log_out(request):
 def home(request):
     if request.user.is_authenticated:
         cookies_now = {'csrftoken': request.COOKIES.get('csrftoken'), 'sessionid': request.COOKIES.get('sessionid')}
-        #Информация текущего аккаунта
 
+        #Информация текущего аккаунта
         my_data = (requests.get("http://127.0.0.1:8000/api/app/current_user/", cookies=cookies_now)).json()
         current_data = {'my_data': my_data}
 
@@ -88,3 +88,14 @@ def home(request):
         #return render(request, 'frontend/home-user.html')
     else:
         return redirect('/')
+
+
+def delete_current_user(request):
+    cookies_now = {'csrftoken': request.COOKIES.get('csrftoken'), 'sessionid': request.COOKIES.get('sessionid')}
+    get_current_user = (requests.get("http://127.0.0.1:8000/api/app/current_user/", cookies=cookies_now)).json()
+    id_current_user = get_current_user['id']
+    headers = {}
+    headers['X-CSRFToken'] = cookies_now['csrftoken']
+    response = requests.delete("http://127.0.0.1:8000/api/app/users/"+str(id_current_user), cookies=cookies_now, headers=headers)
+    print(response.status_code, response.content)
+    return redirect('/')

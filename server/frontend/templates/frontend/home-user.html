@@ -24,33 +24,54 @@
             </div>
             <div class="mt-3">
                 <a href="#" class="btn btn-primary">Изменить</a>
-                <a href="#" class="btn btn-danger">Удалить</a>
-                <a class="btn btn-secondary float-right" data-toggle="modal" data-target="#exitModalCenter">Выход</a>
+                <a class="btn btn-danger text-light" data-toggle="modal" data-target="#delAccountModalCenter">Удалить</a>
+                <a class="btn btn-secondary float-right text-light" data-toggle="modal" data-target="#exitModalCenter">Выход</a>
             </div>
         </div>
     </div>
 
     <div class="modal fade" id="exitModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalLongTitle">Выйти из аккаунта</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Вы действительно хотите выйти из аккаунта?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
-        <a href="/exit" type="button" class="btn btn-danger">Выйти</a>
-      </div>
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLongTitle">Выйти из аккаунта</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Вы действительно хотите выйти из аккаунта?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                    <a href="/exit" type="button" class="btn btn-danger">Выйти</a>
+                </div>
+            </div>
+        </div>
     </div>
-    </div>
-    </div>
-    <h4 class="text-left text-dark mt-5 ml-2">Мои организации</h4>
 
+
+    <div class="modal fade" id="delAccountModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Удаление аккаунта</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            Удалить аккаунт {{my_data.username}}? Система не предусматривает возможности восстановления учётной записи!
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+            <a href="/delete_current_user" type="button" class="btn btn-danger">Удалить</a>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <h4 class="text-left text-dark mt-5 ml-2">Мои организации</h4>
     {% for org in current_organizations%}
     <div class="card mt-2 ml-2 mr-2 mb-5" style="width: auto;">
         <div class="card-body bg-light">

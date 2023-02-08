@@ -4,21 +4,22 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from .serializers import UserSerializer, OrganizationSerializer, EquipmentSerializer
 from .models import User, Organization, Equipment
-from .permissions import IsAdminOrAnyoneCanCreate  #создавать может кто угодно, а просматривать только админ
+from .permissions import IsAuthOrAnyoneCanCreate  #создавать может кто угодно, а просматривать только админ
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
 
 class AllUserViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAdminOrAnyoneCanCreate]
+    #permission_classes = [IsAuthOrAnyoneCanCreate]
     queryset = User.objects.all().order_by('id')
     serializer_class = UserSerializer
   # УДАЛИТЬ
     def create(self, request, *args, **kwargs):
         response = super(AllUserViewSet, self).create(request, *args, **kwargs)
         return response
-  #      return redirect('/api/frontend/') #нужно возвращать код ответа
-  #  http_method_names = ['get', 'post', 'put', 'patch', 'delete']
-
+    # def destroy(self, request, *args, **kwargs):
+    #     response = super(AllUserViewSet, self).destroy(request, *args, **kwargs)
+    #     return response
+    #
 class AllOrganizationsViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Organization.objects.all().order_by('id')
