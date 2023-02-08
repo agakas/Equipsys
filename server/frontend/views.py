@@ -7,6 +7,7 @@ from django.contrib import messages
 import requests
 from django.template.context_processors import csrf
 from django.utils.safestring import SafeString
+from rest_framework import status
 
 
 # Create your views here.
@@ -88,7 +89,7 @@ def home(request):
     else:
         return redirect('/')
 
-
+#Вьюшки-обработчики экрана обычного пользователя
 def delete_current_user(request):
     cookies_now = {'csrftoken': request.COOKIES.get('csrftoken'), 'sessionid': request.COOKIES.get('sessionid')}
     get_current_user = (requests.get("http://127.0.0.1:8000/api/app/current_user/", cookies=cookies_now)).json()
@@ -112,7 +113,28 @@ def add_equip_of_org(request, org_id):
     headers = {}
     headers['X-CSRFToken'] = cookies_now['csrftoken']
     body = request.POST
-
     post_data = dict(serial = body['serial'], organization = org_id)
     response = requests.post("http://127.0.0.1:8000/api/app/equipments/", cookies=cookies_now, headers=headers, data=post_data)
     return redirect('/main')
+
+def edit_current_user(request):
+    cookies_now = {'csrftoken': request.COOKIES.get('csrftoken'), 'sessionid': request.COOKIES.get('sessionid')}
+    headers = {}
+    headers['X-CSRFToken'] = cookies_now['csrftoken']
+    body = request.POST
+    post_data = dict(username=body['username'], password=body['password'], email=body['email'])
+    print("Это оно самое")
+    print(post_data)
+    print("А теперь пользователь")
+    current_user = (requests.get("http://127.0.0.1:8000/api/app/current_user/", cookies=cookies_now)).json()
+    response = requests.put("http://127.0.0.1:8000/api/app/users/"+str(current_user['id'])+"/", cookies=cookies_now, headers=headers, data=post_data)
+    if response.status_code == 400:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    return HttpResponse(status=status.HTTP_200_OK)
+
+# def edit_equip_of_org(request, equip_uuid):
+#
+#     return redirect('/main')
+
+
+#Вьюшки-обработчики экрана админа

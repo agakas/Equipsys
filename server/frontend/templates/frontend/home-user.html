@@ -75,32 +75,39 @@
     <div class="modal fade" id="editUserModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-        <form action="edit_user_action" method="post">
-        <div class="modal-header">
-            <h5 class="modal-title" >Изменение данных аккаунта</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <div class="form-group">
-                <label for="recipient-username" class="col-form-label">Логин:</label>
-                <input type="text" class="form-control" value="{{my_data.username}}" id="recipient-username" name="username" required>
+            <form id="edit_form_account">
+            {% csrf_token %}
+            <div class="modal-header">
+                <h5 class="modal-title" >Изменение данных аккаунта</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="form-group">
-                <label for="recipient-password" class="col-form-label">Пароль:</label>
-                <input type="password" class="form-control" id="recipient-password" name="password" required>
+
+            <div class="alert alert-danger" id="login_reuse_alert" style="display: none">
+                <a class="close" href="#" data-dismiss="alert">x</a>
+                Логин уже используется!
             </div>
-            <div class="form-group">
-                <label for="recipient-email" class="col-form-label">Email:</label>
-                <input type="email" class="form-control" value="{{my_data.email}}" id="recipient-email" name="email" required>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="recipient-username" class="col-form-label">Логин:</label>
+                    <input type="text" class="form-control" value="{{my_data.username}}" id="recipient-username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="recipient-password" class="col-form-label">Пароль:</label>
+                    <input type="password" class="form-control" id="recipient-password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="recipient-email" class="col-form-label">Email:</label>
+                    <input type="email" class="form-control" value="{{my_data.email}}" id="recipient-email" name="email" required>
+                </div>
             </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
-            <button type="submit" class="btn btn-success">Изменить</button>
-        </div>
-        </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                <button type="submit" class="btn btn-success">Изменить</button>
+            </div>
+            </form>
         </div>
         </div>
     </div>
@@ -226,8 +233,31 @@
 
     </div>
     {% endfor %}
-</body>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script>
+let flag = false;
+
+$("#edit_form_account").on("submit", function(){
+	$.ajax({
+        type: 'POST',
+		url: '/edit_current_user',
+		data: $(this).serialize(),
+		success: function(data){
+            location.reload(); 
+		},
+        error: function(data){
+            $("#login_reuse_alert").show();
+        }
+	});
+return flag;
+});
+
+</script>
+
+</body>
+
 </html>
