@@ -106,3 +106,13 @@ def del_equip(request, equip_id):
     headers['X-CSRFToken'] = cookies_now['csrftoken']
     response = requests.delete("http://127.0.0.1:8000/api/app/equipments/" + str(id_current_equipment), cookies=cookies_now, headers=headers)
     return redirect('/main')
+
+def add_equip_of_org(request, org_id):
+    cookies_now = {'csrftoken': request.COOKIES.get('csrftoken'), 'sessionid': request.COOKIES.get('sessionid')}
+    headers = {}
+    headers['X-CSRFToken'] = cookies_now['csrftoken']
+    body = request.POST
+
+    post_data = dict(serial = body['serial'], organization = org_id)
+    response = requests.post("http://127.0.0.1:8000/api/app/equipments/", cookies=cookies_now, headers=headers, data=post_data)
+    return redirect('/main')

@@ -23,7 +23,7 @@
                 <div class="col">{{my_data.updated_at}}</div>
             </div>
             <div class="mt-3">
-                <a href="#" class="btn btn-primary">Изменить</a>
+                <a class="btn btn-primary text-light" data-toggle="modal" data-target="#editUserModalCenter">Изменить</a>
                 <a class="btn btn-danger text-light" data-toggle="modal" data-target="#delAccountModalCenter">Удалить</a>
                 <a class="btn btn-secondary float-right text-light" data-toggle="modal" data-target="#exitModalCenter">Выход</a>
             </div>
@@ -34,7 +34,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalLongTitle">Выйти из аккаунта</h5>
+                    <h5 class="modal-title">Выйти из аккаунта</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
@@ -55,7 +55,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Удаление аккаунта</h5>
+            <h5 class="modal-title">Удаление аккаунта</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -69,6 +69,40 @@
         </div>
         </div>
     </div>
+    </div>
+
+
+    <div class="modal fade" id="editUserModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <form action="edit_user_action" method="post">
+        <div class="modal-header">
+            <h5 class="modal-title" >Изменение данных аккаунта</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="recipient-username" class="col-form-label">Логин:</label>
+                <input type="text" class="form-control" value="{{my_data.username}}" id="recipient-username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="recipient-password" class="col-form-label">Пароль:</label>
+                <input type="password" class="form-control" id="recipient-password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="recipient-email" class="col-form-label">Email:</label>
+                <input type="email" class="form-control" value="{{my_data.email}}" id="recipient-email" name="email" required>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+            <button type="submit" class="btn btn-success">Изменить</button>
+        </div>
+        </form>
+        </div>
+        </div>
     </div>
 
     <h4 class="text-left text-dark mt-5 ml-2">Мои организации</h4>
@@ -105,7 +139,7 @@
                 <div class="col">{{equipment.updated_at}}</div>
             </div>
             <div class="mt-3">
-                <a href="#" class="btn btn-primary">Изменить</a>
+                <a class="btn btn-primary text-light" data-toggle="modal" data-target="#editEquipModalCenter-{{equipment.id}}">Изменить</a>
                 <a class="btn btn-danger text-light" data-toggle="modal" data-target="#delEquipModalCenter-{{equipment.id}}">Удалить</a>
             </div>
         </div>
@@ -115,7 +149,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Удаление оборудования</h5>
+                    <h5 class="modal-title">Удаление оборудования</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
@@ -130,13 +164,65 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="modal fade" id="editEquipModalCenter-{{equipment.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Изменение данных оборудования:</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/", method=post>
+                <div class="modal-body">
+                    <form>
+                    <div class="form-group">
+                        <label for="recipient-serial-edit" class="col-form-label">Серийный номер:</label>
+                        <input type="text" class="form-control" value="{{equipment.serial}}" id="recipient-serial-edit" required>
+                    </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                    <button type="submit" class="btn btn-success">Изменить</button>
+                </div>
+                </form>
+                </div>
+            </div>
+        </div>
             {% endfor %}
         <div class="mt-3">
-                <a href="#" class="btn btn-success mb-2">Добавить</a>
+                <a class="btn btn-success mb-2 text-light" data-toggle="modal" data-target="#addEquipModalCenterOfOrg-{{org.id}}">Добавить</a>
         </div>
     </div>
 
-
+    <div class="modal fade" id="addEquipModalCenterOfOrg-{{org.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Добавление оборудования в {{org.name}}:</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="/add_equip_of_org/{{org.id}}" method="post">
+        {% csrf_token %}
+      <div class="modal-body">
+          <div class="form-group">
+            <label for="recipient-serial-add" class="col-form-label">Серийный номер:</label>
+            <input type="text" class="form-control" id="recipient-serial-add" name="serial" required>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+        <button type="submit" class="btn btn-success">Добавить</button>
+      </div>
+    </form>
+    </div>
+    </div>
+    </div>
 
     </div>
     {% endfor %}
