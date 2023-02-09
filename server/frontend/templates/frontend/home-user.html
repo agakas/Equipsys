@@ -85,7 +85,6 @@
             </div>
 
             <div class="alert alert-danger" id="login_reuse_alert" style="display: none">
-                <a class="close" href="#" data-dismiss="alert">x</a>
                 Логин уже используется!
             </div>
 
@@ -214,8 +213,12 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="/add_equip_of_org/{{org.id}}" method="post">
+      <form data-action="/add_equip_of_org/{{org.id}}" id="add_form_equip" method="post">
         {% csrf_token %}
+
+        <div class="alert alert-danger" id="serial_reuse_alert" style="display: none">
+                Номер уже существует!
+        </div>
       <div class="modal-body">
           <div class="form-group">
             <label for="recipient-serial-add" class="col-form-label">Серийный номер:</label>
@@ -239,7 +242,6 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 <script>
-let flag = false;
 
 $("#edit_form_account").on("submit", function(){
 	$.ajax({
@@ -253,9 +255,24 @@ $("#edit_form_account").on("submit", function(){
             $("#login_reuse_alert").show();
         }
 	});
-return flag;
+return false;
 });
 
+
+$("#add_form_equip").on("submit", function(){
+	$.ajax({
+        type: 'POST',
+		url: $(this).attr('data-action'),
+		data: $(this).serialize(),
+		success: function(data){
+            location.reload(); 
+		},
+        error: function(data){
+            $("#serial_reuse_alert").show();
+        }
+	});
+return false;
+});
 </script>
 
 </body>
