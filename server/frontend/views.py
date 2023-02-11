@@ -115,12 +115,27 @@ def add_equip_of_org(request, org_id):
     headers['X-CSRFToken'] = cookies_now['csrftoken']
     body = request.POST
     post_data = dict(serial = body['serial'], organization = org_id)
+    print('Запрос add_equip_of_org')
+    print(post_data)
     response = requests.post("http://127.0.0.1:8000/api/app/equipments/", cookies=cookies_now, headers=headers, data=post_data)
     if response.status_code == 400:
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
     return HttpResponse(status=status.HTTP_200_OK)
     #return redirect('/main')
 
+def edit_equip(request, equip_id):
+    cookies_now = {'csrftoken': request.COOKIES.get('csrftoken'), 'sessionid': request.COOKIES.get('sessionid')}
+    print(cookies_now)
+    headers = {}
+    headers['X-CSRFToken'] = cookies_now['csrftoken']
+    body = request.POST
+    patch_data = dict(serial=body['serial'])
+    response = requests.patch("http://127.0.0.1:8000/api/app/equipments/" + str(equip_id) + "/", cookies=cookies_now, headers=headers, data=patch_data)
+    print("Ты заходи если шо")
+    print(response.content)
+    if response.status_code == 400:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    return HttpResponse(status=status.HTTP_200_OK)
 def edit_current_user(request):
     cookies_now = {'csrftoken': request.COOKIES.get('csrftoken'), 'sessionid': request.COOKIES.get('sessionid')}
     headers = {}

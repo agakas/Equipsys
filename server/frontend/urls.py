@@ -11,6 +11,7 @@ urlpatterns = [
     path('edit_current_user', views.edit_current_user),
     path('delete_current_user', views.delete_current_user),
     path('add_equip_of_org/<org_id>', views.add_equip_of_org),
+    path('edit_equip/<equip_id>', views.edit_equip),
     path('del_equip/<equip_id>', views.del_equip),
     path('exit', views.log_out),
     path('main', views.home),

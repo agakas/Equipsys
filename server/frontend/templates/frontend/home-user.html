@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <title>Home</title>
 </head>
 <body>
@@ -181,23 +182,47 @@
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="/", method=post>
-                <div class="modal-body">
-                    <form>
-                    <div class="form-group">
-                        <label for="recipient-serial-edit" class="col-form-label">Серийный номер:</label>
-                        <input type="text" class="form-control" value="{{equipment.serial}}" id="recipient-serial-edit" required>
+                <form id="edit_form_equip_{{equipment.id}}", method="post">
+
+                {% csrf_token %}
+
+                <div class="alert alert-danger" id="serial_reuse_edit_alert_{{equipment.id}}" style="display: none">
+                        Номер уже существует!
+                </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="recipient-serial-edit_{{equipment.id}}" class="col-form-label">Серийный номер:</label>
+                            <input type="text" class="form-control" value="{{equipment.serial}}" id="recipient-serial-edit_{{equipment.id}}" name="serial" required>
+                        </div>
                     </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
-                    <button type="submit" class="btn btn-success">Изменить</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                        <button type="submit" class="btn btn-success">Изменить</button>
+                    </div>
                 </form>
                 </div>
             </div>
         </div>
+
+        <script>
+            $("#edit_form_equip_{{equipment.id}}").on("submit", function(){
+            $.ajax({
+                type: 'POST',
+                url: '/edit_equip/{{equipment.id}}',
+                data: $(this).serialize(),
+                success: function(data){
+                    location.reload(); 
+                },
+                error: function(data){
+                    $("#serial_reuse_edit_alert_{{equipment.id}}").show();
+                }
+            });
+            return false;
+            });
+        </script>
+
+
             {% endfor %}
         <div class="mt-3">
                 <a class="btn btn-success mb-2 text-light" data-toggle="modal" data-target="#addEquipModalCenterOfOrg-{{org.id}}">Добавить</a>
@@ -213,16 +238,16 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form data-action="/add_equip_of_org/{{org.id}}" id="add_form_equip" method="post">
+      <form id="add_form_equip_{{org.id}}" method="post">
         {% csrf_token %}
 
-        <div class="alert alert-danger" id="serial_reuse_alert" style="display: none">
+        <div class="alert alert-danger" id="serial_reuse_alert_{{org.id}}" style="display: none">
                 Номер уже существует!
         </div>
       <div class="modal-body">
           <div class="form-group">
-            <label for="recipient-serial-add" class="col-form-label">Серийный номер:</label>
-            <input type="text" class="form-control" id="recipient-serial-add" name="serial" required>
+            <label for="recipient-serial-add_{{org.id}}" class="col-form-label">Серийный номер:</label>
+            <input type="text" class="form-control" id="recipient-serial-add_{{org.id}}" name="serial" required>
           </div>
       </div>
       <div class="modal-footer">
@@ -235,9 +260,28 @@
     </div>
 
     </div>
+
+
+<script>
+    $("#add_form_equip_{{org.id}}").on("submit", function(){
+	$.ajax({
+        type: 'POST',
+		url: '/add_equip_of_org/{{org.id}}',
+		data: $(this).serialize(),
+		success: function(data){
+            location.reload(); 
+		},
+        error: function(data){
+            $("#serial_reuse_alert_{{org.id}}").show();
+        }
+	});
+    return false;
+    });
+</script>
+
     {% endfor %}
 
-<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
@@ -253,22 +297,6 @@ $("#edit_form_account").on("submit", function(){
 		},
         error: function(data){
             $("#login_reuse_alert").show();
-        }
-	});
-return false;
-});
-
-
-$("#add_form_equip").on("submit", function(){
-	$.ajax({
-        type: 'POST',
-		url: $(this).attr('data-action'),
-		data: $(this).serialize(),
-		success: function(data){
-            location.reload(); 
-		},
-        error: function(data){
-            $("#serial_reuse_alert").show();
         }
 	});
 return false;
