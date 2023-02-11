@@ -24,7 +24,7 @@
 
             </div>
             <div class="mt-3">
-                <a class="btn btn-danger text-light" data-toggle="modal" data-target="#delAccountModalCenter">Удалить</a>
+                <a class="btn btn-danger text-light" data-toggle="modal" data-target="#delAdminModalCenter">Удалить</a>
                 <a class="btn btn-secondary float-right text-light" data-toggle="modal" data-target="#exitModalCenter">Выход</a>
             </div>
         </div>
@@ -50,7 +50,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="delAccountModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="delAdminModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
             <div class="modal-header">
@@ -60,7 +60,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                Удалить аккаунт {{my_data.username}}? Система не предусматривает возможности восстановления учётной записи!
+                Удалить суперпользователя {{my_data.username}}? Система не предусматривает возможности восстановления учётной записи!
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
@@ -88,7 +88,7 @@
             </div>
             <div class="mt-3">
                 <a class="btn btn-success text-light" data-toggle="modal" data-target="#userToAdminModalCenter_{{user.id}}">Назначить админом</a>
-                <a class="btn btn-danger text-light" data-toggle="modal" data-target="#delAccountModalCenter">Удалить</a>
+                <a class="btn btn-danger text-light" data-toggle="modal" data-target="#delAccountModalCenter_{{user.id}}">Удалить</a>
             </div>
         </div>
     </div>
@@ -113,10 +113,33 @@
         </div>
     </div>
 
+
+    <div class="modal fade" id="delAccountModalCenter_{{user.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Удадение пользователя {{user.username}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Вы действительно хотите удалить {{user.username}}? Система не предусматривает восстановление аккаунта.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                    <a href="/delete_user_id/{{user.id}}" type="button" class="btn btn-danger">Удалить</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
 
 
     </script>
+
+
     {% endif %}
     {% endfor %}
 

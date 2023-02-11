@@ -14,6 +14,7 @@ urlpatterns = [
     path('edit_equip/<equip_id>', views.edit_equip),
     path('del_equip/<equip_id>', views.del_equip),
     path('user_to_admin/<user_id>', views.user_to_admin),
+    path('delete_user_id/<user_id>', views.delete_user_id),
     path('exit', views.log_out),
     path('main', views.home),
 ]

@@ -99,6 +99,15 @@ def delete_current_user(request):
     print(response.status_code, response.content)
     return redirect('/')
 
+def delete_user_id(request, user_id):
+    permission_classes = [IsAdminUser]
+    cookies_now = {'csrftoken': request.COOKIES.get('csrftoken'), 'sessionid': request.COOKIES.get('sessionid')}
+    headers = {}
+    headers['X-CSRFToken'] = cookies_now['csrftoken']
+    response = requests.delete("http://127.0.0.1:8000/api/app/users/"+str(user_id), cookies=cookies_now, headers=headers)
+    print(response.status_code, response.content)
+    return redirect('/')
+
 def del_equip(request, equip_id):
     cookies_now = {'csrftoken': request.COOKIES.get('csrftoken'), 'sessionid': request.COOKIES.get('sessionid')}
     id_current_equipment = equip_id
@@ -157,11 +166,13 @@ def user_to_admin(request, user_id):
     headers = {}
     headers['X-CSRFToken'] = cookies_now['csrftoken']
     patch_data = dict(is_superuser = True)
+    current_user = (requests.get("http://127.0.0.1:8000/api/app/current_user/", cookies=cookies_now)).json()
     response = requests.patch("http://127.0.0.1:8000/api/app/users/" + str(user_id)+"/", cookies=cookies_now, headers=headers, data=patch_data)
-    print(response.content)
-    # current_user = (requests.get("http://127.0.0.1:8000/api/app/current_user/", cookies=cookies_now)).json()
-    # update_session_auth_hash(request, current_user)
-    return redirect('/main', headers=headers)
+    response_cookies = response.cookies
+    current_cookies = dict(response_cookies)
+    resp = redirect('/main')
+    resp.set_cookie('sessionid', current_cookies['sessionid'])
+    return resp
 # def edit_equip_of_org(request, equip_uuid):
 #
 #     return redirect('/main')
