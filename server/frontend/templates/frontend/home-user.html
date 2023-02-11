@@ -9,7 +9,7 @@
     <title>Home</title>
 </head>
 <body>
-    <h2 class="text-left text-primary mt-2 ml-2">Equipment</h2>
+    <h2 class="text-left text-primary mt-2 ml-2">Equipsys</h2>
     <h2 class="text-left text-dark mt-5 ml-2">Мой аккаунт</h2>
     <div class="card bg-light mt-2 ml-2 mr-2" style="width: auto;">
         <div class="card-body">
@@ -53,23 +53,23 @@
 
 
     <div class="modal fade" id="delAccountModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">Удаление аккаунта</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Удаление аккаунта</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Удалить аккаунт {{my_data.username}}? Система не предусматривает возможности восстановления учётной записи!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                <a href="/delete_current_user" type="button" class="btn btn-danger">Удалить</a>
+            </div>
+            </div>
         </div>
-        <div class="modal-body">
-            Удалить аккаунт {{my_data.username}}? Система не предусматривает возможности восстановления учётной записи!
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
-            <a href="/delete_current_user" type="button" class="btn btn-danger">Удалить</a>
-        </div>
-        </div>
-    </div>
     </div>
 
 

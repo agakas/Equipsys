@@ -5,131 +5,132 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <title>Home</title>
 </head>
 <body>
-    <h2 class="text-left text-primary mt-2 ml-2">Equipment-admin</h2>
+    <h2 class="text-left text-primary mt-2 ml-2">Equipsys-admin</h2>
     <h4 class="text-left text-dark mt-5 ml-2">Мой аккаунт</h2>
     <div class="card bg-light mt-2 ml-2 mr-2" style="width: auto;">
         <div class="card-body">
-            <h5 class="card-title">{{username}}</h5>
+            <h5 class="card-title">{{my_data.username}}</h5>
             <div class="row">
                 <div class="col"><h6>Email:</h6></div>
                 <div class="col"><h6>Дата создания аккаунта:</h6></div>
                 <div class="col"><h6>Дата последнего изменения аккаунта:</h6></div>
                 <div class="w-100"></div>
-                <div class="col">{{email}}</div>
-                <div class="col">{{created_at}}</div>
-                <div class="col">{{updated_at}}</div>
+                <div class="col">{{my_data.email}}</div>
+                <div class="col">{{my_data.created_at}}</div>
+                <div class="col">{{my_data.updated_at}}</div>
             </div>
             <div class="mt-3">
-                <a href="#" class="btn btn-primary">Изменить</a>
-                <a href="#" class="btn btn-danger">Удалить</a>
-                <a href="/exit" class="btn btn-secondary float-right">Выход</a>
+                <a class="btn btn-primary text-light" data-toggle="modal" data-target="#editUserModalCenter">Изменить</a>
+                <a class="btn btn-danger text-light" data-toggle="modal" data-target="#delAccountModalCenter">Удалить</a>
+                <a class="btn btn-secondary float-right text-light" data-toggle="modal" data-target="#exitModalCenter">Выход</a>
             </div>
         </div>
     </div>
-    <h4 class="text-left text-dark mt-5 ml-2">Мои организации</h4>
-    <div class="card mt-2 ml-2 mr-2 mb-5" style="width: auto;">
-        <div class="card-body bg-light">
-            <h5 class="card-title">VK</h5>
-            <div class="row">
-                <div class="col"><h6>ИНН:</h6></div>
-                <div class="col"><h6>Дата создания организации:</h6></div>
-                <div class="col"><h6>Дата последнего изменения организации:</h6></div>
-                <div class="w-100"></div>
-                <div class="col">1111111111</div>
-                <div class="col">22.06.2001</div>
-                <div class="col">22.06.2001</div>
-            </div>
-        </div>
-        <h4 class="text-left text-dark mt-2 ml-2">Оборудование организации</h4>
-        <div class="card  mt-2 ml-2 mr-2" style="width: auto;">
-        <div class="card-body bg-secondary mb-2">
-            <div class="row text-light">
-                <div class="col"><h6>Серийный номер:</h6></div>
-                <div class="col"><h6>Дата внесения оборудования:</h6></div>
-                <div class="col"><h6>Дата последнего изменения оборудования:</h6></div>
-                <div class="w-100"></div>
-                <div class="col">1111111111</div>
-                <div class="col">22.06.2001</div>
-                <div class="col">22.06.2001</div>
-            </div>
-            <div class="mt-3">
-                <a href="#" class="btn btn-primary">Изменить</a>
-                <a href="#" class="btn btn-danger">Удалить</a>
-            </div>
-        </div>
-        <div class="card-body bg-secondary mb-2">
-            <div class="row text-light">
-                <div class="col"><h6>Серийный номер:</h6></div>
-                <div class="col"><h6>Дата внесения оборудования:</h6></div>
-                <div class="col"><h6>Дата последнего изменения оборудования:</h6></div>
-                <div class="w-100"></div>
-                <div class="col">1111111111</div>
-                <div class="col">22.06.2001</div>
-                <div class="col">22.06.2001</div>
-            </div>
-            <div class="mt-3">
-                <a href="#" class="btn btn-primary">Изменить</a>
-                <a href="#" class="btn btn-danger">Удалить</a>
-            </div>
-        </div>
-        <div class="mt-3">
-                <a href="#" class="btn btn-success mb-2">Добавить</a>
-        </div>
-    </div>
-    </div>
-    <div class="card mt-2 ml-2 mr-2" style="width: auto;">
-        <div class="card-body bg-light">
-            <h5 class="card-title">VK</h5>
-            <div class="row">
-                <div class="col"><h6>ИНН:</h6></div>
-                <div class="col"><h6>Дата создания организации:</h6></div>
-                <div class="col"><h6>Дата последнего изменения организации:</h6></div>
-                <div class="w-100"></div>
-                <div class="col">1111111111</div>
-                <div class="col">22.06.2001</div>
-                <div class="col">22.06.2001</div>
-            </div>
-        </div>
-        <h4 class="text-left text-dark mt-2 ml-2">Оборудование организации</h4>
-        <div class="card mt-2 ml-2 mr-2" style="width: auto;">
-        <div class="card-body bg-secondary mb-2">
-            <div class="row text-light">
-                <div class="col"><h6>Серийный номер:</h6></div>
-                <div class="col"><h6>Дата внесения оборудования:</h6></div>
-                <div class="col"><h6>Дата последнего изменения оборудования:</h6></div>
-                <div class="w-100"></div>
-                <div class="col">1111111111</div>
-                <div class="col">22.06.2001</div>
-                <div class="col">22.06.2001</div>
-            </div>
-            <div class="mt-3">
-                <a href="#" class="btn btn-primary">Изменить</a>
-                <a href="#" class="btn btn-danger">Удалить</a>
-            </div>
-        </div>
-        <div class="card-body bg-secondary mb-2">
-            <div class="row text-light">
-                <div class="col"><h6>Серийный номер:</h6></div>
-                <div class="col"><h6>Дата внесения оборудования:</h6></div>
-                <div class="col"><h6>Дата последнего изменения оборудования:</h6></div>
-                <div class="w-100"></div>
-                <div class="col">1111111111</div>
-                <div class="col">22.06.2001</div>
-                <div class="col">22.06.2001</div>
-            </div>
-            <div class="mt-3">
-                <a href="#" class="btn btn-primary">Изменить</a>
-                <a href="#" class="btn btn-danger">Удалить</a>
+    
+    <div class="modal fade" id="exitModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Выйти из аккаунта</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Вы действительно хотите выйти из аккаунта?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                    <a href="/exit" type="button" class="btn btn-danger">Выйти</a>
+                </div>
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="delAccountModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Удаление аккаунта</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Удалить аккаунт {{my_data.username}}? Система не предусматривает возможности восстановления учётной записи!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                <a href="/delete_current_user" type="button" class="btn btn-danger">Удалить</a>
+            </div>
+            </div>
+        </div>
     </div>
-  </div>
+
+    <div class="modal fade" id="editUserModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form id="edit_form_account">
+            {% csrf_token %}
+            <div class="modal-header">
+                <h5 class="modal-title" >Изменение данных аккаунта</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="alert alert-danger" id="login_reuse_alert" style="display: none">
+                Логин уже используется!
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="recipient-username" class="col-form-label">Логин:</label>
+                    <input type="text" class="form-control" value="{{my_data.username}}" id="recipient-username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="recipient-password" class="col-form-label">Пароль:</label>
+                    <input type="password" class="form-control" id="recipient-password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="recipient-email" class="col-form-label">Email:</label>
+                    <input type="email" class="form-control" value="{{my_data.email}}" id="recipient-email" name="email" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                <button type="submit" class="btn btn-success">Изменить</button>
+            </div>
+            </form>
+        </div>
+        </div>
+    </div>
+
+
+
+
+<script>
+
+$("#edit_form_account").on("submit", function(){
+	$.ajax({
+        type: 'POST',
+		url: '/edit_current_user',
+		data: $(this).serialize(),
+		success: function(data){
+            location.reload(); 
+		},
+        error: function(data){
+            $("#login_reuse_alert").show();
+        }
+	});
+return false;
+});
+</script>
 </body>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </html>
