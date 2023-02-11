@@ -1,13 +1,11 @@
-import json
-from django.contrib.auth import authenticate, login, logout, _get_user_session_key
+from django.contrib.auth import update_session_auth_hash
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib import messages
 import requests
-from django.template.context_processors import csrf
-from django.utils.safestring import SafeString
 from rest_framework import status
+from rest_framework.permissions import IsAdminUser
 
 
 # Create your views here.
@@ -70,6 +68,7 @@ def home(request):
         if request.user.is_superuser:
             users_data = (requests.get("http://127.0.0.1:8000/api/app/users/", cookies=cookies_now)).json()
             organizations_data = (requests.get("http://127.0.0.1:8000/api/app/organizations/", cookies=cookies_now)).json()
+            current_data['all_users'] = users_data
             return render(request, 'frontend/home-admin.html', context=current_data)
 
         #информация об организациях пользователя
@@ -151,6 +150,18 @@ def edit_current_user(request):
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
     return HttpResponse(status=status.HTTP_200_OK)
 
+
+def user_to_admin(request, user_id):
+    permission_classes = [IsAdminUser]
+    cookies_now = {'csrftoken': request.COOKIES.get('csrftoken'), 'sessionid': request.COOKIES.get('sessionid')}
+    headers = {}
+    headers['X-CSRFToken'] = cookies_now['csrftoken']
+    patch_data = dict(is_superuser = True)
+    response = requests.patch("http://127.0.0.1:8000/api/app/users/" + str(user_id)+"/", cookies=cookies_now, headers=headers, data=patch_data)
+    print(response.content)
+    # current_user = (requests.get("http://127.0.0.1:8000/api/app/current_user/", cookies=cookies_now)).json()
+    # update_session_auth_hash(request, current_user)
+    return redirect('/main', headers=headers)
 # def edit_equip_of_org(request, equip_uuid):
 #
 #     return redirect('/main')

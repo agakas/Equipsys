@@ -13,6 +13,7 @@ urlpatterns = [
     path('add_equip_of_org/<org_id>', views.add_equip_of_org),
     path('edit_equip/<equip_id>', views.edit_equip),
     path('del_equip/<equip_id>', views.del_equip),
+    path('user_to_admin/<user_id>', views.user_to_admin),
     path('exit', views.log_out),
     path('main', views.home),
 ]

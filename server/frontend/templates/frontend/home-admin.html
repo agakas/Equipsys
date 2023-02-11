@@ -17,14 +17,13 @@
             <div class="row">
                 <div class="col"><h6>Email:</h6></div>
                 <div class="col"><h6>Дата создания аккаунта:</h6></div>
-                <div class="col"><h6>Дата последнего изменения аккаунта:</h6></div>
+ 
                 <div class="w-100"></div>
                 <div class="col">{{my_data.email}}</div>
                 <div class="col">{{my_data.created_at}}</div>
-                <div class="col">{{my_data.updated_at}}</div>
+
             </div>
             <div class="mt-3">
-                <a class="btn btn-primary text-light" data-toggle="modal" data-target="#editUserModalCenter">Изменить</a>
                 <a class="btn btn-danger text-light" data-toggle="modal" data-target="#delAccountModalCenter">Удалить</a>
                 <a class="btn btn-secondary float-right text-light" data-toggle="modal" data-target="#exitModalCenter">Выход</a>
             </div>
@@ -71,45 +70,55 @@
         </div>
     </div>
 
-    <div class="modal fade" id="editUserModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <form id="edit_form_account">
-            {% csrf_token %}
-            <div class="modal-header">
-                <h5 class="modal-title" >Изменение данных аккаунта</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
+    
+    <h4 class="text-left text-dark mt-5 ml-2">Все пользователи:</h4>
+    {% for user in all_users %}
+    {% if not user.is_superuser%}
+    <div class="card bg-light mt-2 ml-2 mr-2" style="width: auto;">
+        <div class="card-body">
+            <h5 class="card-title">{{user.username}}</h5>
+            <div class="row">
+                <div class="col"><h6>Email:</h6></div>
+                <div class="col"><h6>Дата создания аккаунта:</h6></div>
+                <div class="col"><h6>Дата последнего изменения аккаунта:</h6></div>
+                <div class="w-100"></div>
+                <div class="col">{{user.email}}</div>
+                <div class="col">{{user.created_at}}</div>
+                <div class="col">{{user.updated_at}}</div>
             </div>
-
-            <div class="alert alert-danger" id="login_reuse_alert" style="display: none">
-                Логин уже используется!
+            <div class="mt-3">
+                <a class="btn btn-success text-light" data-toggle="modal" data-target="#userToAdminModalCenter_{{user.id}}">Назначить админом</a>
+                <a class="btn btn-danger text-light" data-toggle="modal" data-target="#delAccountModalCenter">Удалить</a>
             </div>
-
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="recipient-username" class="col-form-label">Логин:</label>
-                    <input type="text" class="form-control" value="{{my_data.username}}" id="recipient-username" name="username" required>
-                </div>
-                <div class="form-group">
-                    <label for="recipient-password" class="col-form-label">Пароль:</label>
-                    <input type="password" class="form-control" id="recipient-password" name="password" required>
-                </div>
-                <div class="form-group">
-                    <label for="recipient-email" class="col-form-label">Email:</label>
-                    <input type="email" class="form-control" value="{{my_data.email}}" id="recipient-email" name="email" required>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
-                <button type="submit" class="btn btn-success">Изменить</button>
-            </div>
-            </form>
-        </div>
         </div>
     </div>
 
+    <div class="modal fade" id="userToAdminModalCenter_{{user.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Назначение админом</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Вы действительно хотите назначить {{user.username}} админом?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                    <a href="/user_to_admin/{{user.id}}" type="button" class="btn btn-success">Сделать админом</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+
+    </script>
+    {% endif %}
+    {% endfor %}
 
 
 

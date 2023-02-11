@@ -8,7 +8,7 @@ from django.contrib.auth import update_session_auth_hash
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model  = User
-        fields = ("id" , "username", "password", "email", "created_at", "updated_at")
+        fields = ("id" , "username", "password", "email", "created_at", "updated_at", "is_superuser")
 
         extra_kwargs = {'password': {'write_only': True, 'min_length': 4}}
     def create(self, validated_data):
@@ -24,6 +24,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     def update(self, instance, validated_data):
             instance.username = validated_data.get('username', instance.username)
             instance.email = validated_data.get('email', instance.email)
+            instance.is_superuser = validated_data.get('is_superuser', instance.is_superuser)
             instance.save()
 
             password = validated_data.get('password', None)
@@ -36,7 +37,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class UserForViewSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model  = User
-        fields = ("id" , "username", "email", "created_at", "updated_at")
+        fields = ("id" , "username", "email", "created_at", "updated_at", "is_superuser")
 
 class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
     users = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
