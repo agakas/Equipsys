@@ -6,6 +6,8 @@ from django.contrib.auth import update_session_auth_hash
 
 #Сделай раздельные сериализаторы чтобы при get не видеть кэш пароля
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    created_at = serializers.DateTimeField(format="%d.%m.%Y %H:%M:%S")
+    updated_at = serializers.DateTimeField(format="%d.%m.%Y %H:%M:%S")
     class Meta:
         model  = User
         fields = ("id" , "username", "password", "email", "created_at", "updated_at", "is_superuser")
@@ -35,12 +37,16 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             return instance
 
 class UserForViewSerializer(serializers.HyperlinkedModelSerializer):
+    created_at = serializers.DateTimeField(format="%d.%m.%Y %H:%M:%S")
+    updated_at = serializers.DateTimeField(format="%d.%m.%Y %H:%M:%S")
     class Meta:
         model  = User
         fields = ("id" , "username", "email", "created_at", "updated_at", "is_superuser")
 
 class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
     users = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
+    created_at = serializers.DateTimeField(format="%d.%m.%Y %H:%M:%S")
+    updated_at = serializers.DateTimeField(format="%d.%m.%Y %H:%M:%S")
     class Meta:
         model  = Organization
         fields = ("id" , "name", "inn", "created_at", "updated_at", "users")
@@ -50,6 +56,8 @@ class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
 class EquipmentSerializer(serializers.HyperlinkedModelSerializer):
     #organization = serializers.IntegerField(source='organization.id')
     organization = serializers.PrimaryKeyRelatedField(queryset=Organization.objects.all())
+    created_at = serializers.DateTimeField(format="%d.%m.%Y %H:%M:%S")
+    updated_at = serializers.DateTimeField(format="%d.%m.%Y %H:%M:%S")
     class Meta:
         model  = Equipment
         fields = ("id" , "serial", "organization", "created_at", "updated_at")
