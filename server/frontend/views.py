@@ -69,6 +69,7 @@ def home(request):
             users_data = (requests.get("http://127.0.0.1:8000/api/app/users/", cookies=cookies_now)).json()
             organizations_data = (requests.get("http://127.0.0.1:8000/api/app/organizations/", cookies=cookies_now)).json()
             current_data['all_users'] = users_data
+            current_data['all_orgs'] = organizations_data
             return render(request, 'frontend/home-admin.html', context=current_data)
 
         #информация об организациях пользователя

@@ -193,7 +193,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="recipient-serial-edit_{{equipment.id}}" class="col-form-label">Серийный номер:</label>
-                            <input type="text" class="form-control" value="{{equipment.serial}}" id="recipient-serial-edit_{{equipment.id}}" name="serial" required>
+                            <input type="text" class="form-control" pattern=".{10}"   required title="Серийный номер должен состоять из 10 символов." value="{{equipment.serial}}" id="recipient-serial-edit_{{equipment.id}}" name="serial" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -247,7 +247,7 @@
       <div class="modal-body">
           <div class="form-group">
             <label for="recipient-serial-add_{{org.id}}" class="col-form-label">Серийный номер:</label>
-            <input type="text" class="form-control" id="recipient-serial-add_{{org.id}}" name="serial" required>
+            <input type="text" class="form-control"  pattern=".{10}"   required title="Серийный номер должен состоять из 10 символов." id="recipient-serial-add_{{org.id}}" name="serial" required>
           </div>
       </div>
       <div class="modal-footer">
