@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 
 
 class AllUserViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthOrAnyoneCanCreate]
+    #permission_classes = [IsAuthenticated]
     queryset = User.objects.all().order_by('id')
     serializer_class = UserSerializer
   # УДАЛИТЬ
