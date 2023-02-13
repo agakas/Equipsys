@@ -117,6 +117,8 @@ def add_equip_of_org(request, org_id):
     headers['X-CSRFToken'] = cookies_now['csrftoken']
     body = request.POST
     post_data = dict(serial = body['serial'], organization = org_id)
+    if not len(body.get('serial')) == 10:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
     response = requests.post("http://127.0.0.1:8000/api/app/equipments/", cookies=cookies_now,
                              headers=headers, data=post_data)
     if response.status_code == 400:
@@ -129,7 +131,9 @@ def edit_equip(request, equip_id):
     headers = {}
     headers['X-CSRFToken'] = cookies_now['csrftoken']
     body = request.POST
-    patch_data = dict(serial=body['serial'])
+    patch_data = dict(serial=body.get('serial'))
+    if not len(body.get('serial')) == 10:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
     response = requests.patch("http://127.0.0.1:8000/api/app/equipments/" + str(equip_id) + "/", cookies=cookies_now,
                               headers=headers, data=patch_data)
     if response.status_code == 400:
@@ -167,6 +171,29 @@ def user_to_admin(request, user_id):
     resp.set_cookie('sessionid', current_cookies['sessionid'])
     return resp
 
+def add_org(request):
+    permission_classes = [IsAdminUser]
+    cookies_now = {'csrftoken': request.COOKIES.get('csrftoken'), 'sessionid': request.COOKIES.get('sessionid')}
+    headers = {}
+    headers['X-CSRFToken'] = cookies_now['csrftoken']
+    print('Аллооооо я тутаааа')
+    body = request.POST
+    users = list(request.POST.getlist('users'))
+    post_data = {'name': body.get('name'), 'inn': body.get('inn'), 'users': users}
+    if body['inn']:
+        if ((not len(body.get('inn')) == 10) and (not len(body.get('inn')) == 13)) or not str(body.get('inn')).isdigit():
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+        response_uniq = requests.get("http://127.0.0.1:8000/api/app/unique_inn_org/" + str(body.get('inn')),
+                                     cookies=cookies_now,
+                                     headers=headers)
+        if response_uniq.status_code == 400:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    response = requests.post("http://127.0.0.1:8000/api/app/organizations/",  cookies=cookies_now,
+                              headers=headers, data=post_data)
+    if response.status_code == 400:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    return HttpResponse(status=status.HTTP_200_OK)
+
 def delete_org(request, org_id):
     permission_classes = [IsAdminUser]
     cookies_now = {'csrftoken': request.COOKIES.get('csrftoken'), 'sessionid': request.COOKIES.get('sessionid')}
@@ -187,12 +214,14 @@ def edit_org(request, org_id):
     patch_data = {'name': body.get('name'), 'inn': body.get('inn'), 'users': users}
     #если inn непустое должны проверить уникальность
     if body['inn']:
+        if ((not len(body.get('inn')) == 10) and (not len(body.get('inn')) == 13)) or not str(body.get('inn')).isdigit():
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
         current_org = (requests.get("http://127.0.0.1:8000/api/app/organizations/" + str(org_id), cookies=cookies_now,
                                 headers=headers)).json()
         #если данное значение пренадлежит данной компании, то просто пропускаем
         if str(body.get('inn')) == str(current_org['inn']):
             print("Та же самая компания всё гуд")
-            patch_data = {'name': body['name'], 'users': users}
+            patch_data = {'name': body.get('name'), 'users': users}
             #если данное значение не пренадлежит данной компании
         else:
             response_uniq = requests.get("http://127.0.0.1:8000/api/app/unique_inn_org/"+str(body.get('inn')), cookies=cookies_now,

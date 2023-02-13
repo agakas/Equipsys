@@ -197,7 +197,7 @@
                 {% csrf_token %}
 
                 <div class="alert alert-danger" id="inn_reuse_edit_alert_{{org.id}}" style="display: none">
-                        ИНН уже существует в базе!
+                        ИНН уже существует в базе или введён неправильный формат. Оставьте поле пустым или заполните 10 или 13 цифр.
                 </div>
 
                     <div class="modal-body">
@@ -253,22 +253,68 @@
 
     {% endfor %}
     <div class="mt-3">
-                <a class="btn btn-success mb-2 ml-2 text-light" data-toggle="modal" data-target="#">Добавить организацию</a>
+                <a class="btn btn-success mb-2 ml-2 text-light" data-toggle="modal" data-target="#addOrgModalCenter">Добавить организацию</a>
     </div>
+    <div class="modal fade" id="addOrgModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Добавление организации:</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="add_form_org", method="post">
+
+                {% csrf_token %}
+
+                <div class="alert alert-danger" id="add_org_reuse" style="display: none">
+                        ИНН уже существует в базе или введён неправильный формат. Оставьте поле пустым или заполните 10 или 13 цифр.
+                </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="recipient-name-add" class="col-form-label">Название:</label>
+                            <input type="text" class="form-control" id="recipient-name-add" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-inn-add" class="col-form-label">ИНН:</label>
+                            <input type="text" class="form-control" id="recipient-inn-add" name="inn">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-users-add" class="col-form-label">Пользователи:</label>
+                            <select id="recipient-users-add" name="users" size="3" multiple>
+                                {% for user in all_users %}
+                                    {% if not user.is_superuser %}
+                                        <option value="{{user.id}}">{{user.username}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                        <button type="submit" class="btn btn-success">Добавить</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+    </div>
+
     </div>
     
 <script>
 
-$("#edit_form_account").on("submit", function(){
+$("#add_form_org").on("submit", function(){
 	$.ajax({
         type: 'POST',
-		url: '/edit_current_user',
+		url: '/add_org/',
 		data: $(this).serialize(),
 		success: function(data){
             location.reload(); 
 		},
         error: function(data){
-            $("#login_reuse_alert").show();
+            $("#add_org_reuse").show();
         }
 	});
 return false;
