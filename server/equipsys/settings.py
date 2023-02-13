@@ -115,6 +115,7 @@ AUTH_USER_MODEL = 'equip_app.User'
 
 LANGUAGE_CODE = 'en-us'
 
+
 TIME_ZONE = 'UTC'
 
 USE_I18N = True

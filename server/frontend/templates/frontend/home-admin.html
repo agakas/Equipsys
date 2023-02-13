@@ -207,7 +207,7 @@
                         </div>
                         <div class="form-group">
                             <label for="recipient-inn-edit_{{org.id}}" class="col-form-label">ИНН:</label>
-                            <input type="text" class="form-control" value="{{org.inn}}" id="recipient-inn-edit_{{org.id}}" name="inn" required>
+                            <input type="text" class="form-control"{% if org.inn != None %} value="{{org.inn}}" {% endif%} id="recipient-inn-edit_{{org.id}}" name="inn">
                         </div>
                         <div class="form-group">
                             <label for="recipient-users-edit_{{org.id}}" class="col-form-label">Пользователи:</label>
@@ -235,8 +235,20 @@
     
 
     <script>
-
-
+    $("#edit_form_org_{{org.id}}").on("submit", function(){
+        $.ajax({
+            type: 'POST',
+            url: '/edit_form_org/{{org.id}}',
+            data: $(this).serialize(),
+            success: function(data){
+                location.reload(); 
+            },
+            error: function(data){
+                $("#inn_reuse_edit_alert_{{org.id}}").show();
+            }
+        });
+    return false;
+    });
     </script>
 
     {% endfor %}

@@ -74,9 +74,17 @@ def login_user(request):
            #Если пользователь является админом, то это посылается в заголовке
            return HttpResponse("Admin Logged In", headers={'IsAdmin':True}, status=status.HTTP_200_OK)
        print('Крутяк')
-       return HttpResponse("Logged In", headers={'IsAdmin':False}, status=status.HTTP_200_OK)
+       return HttpResponse("Logged In", status=status.HTTP_200_OK)
     print('Такое себе')
     return HttpResponse("Not Logged In", status=status.HTTP_400_BAD_REQUEST)
+
+def unique_inn_org(request, inn):
+    permission_classes = [IsAuthenticated]
+    queryset = Organization.objects.all().order_by('id')
+
+    if queryset.filter(inn=inn).exists():
+        return HttpResponse("It Exists", status=status.HTTP_400_BAD_REQUEST)
+    return HttpResponse("Exists", status=status.HTTP_200_OK)
 
 def log_out(request):
     logout(request)

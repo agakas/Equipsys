@@ -15,5 +15,6 @@ urlpatterns = [
     path('current_organizations/', views.OrganizationsOfUser.as_view({'get':'list'}), name = 'current_organization-list'),
     path('equip_of_org/', views.EquipsOfOrg.as_view({'get':'list'})),
     path('login_user/', views.login_user),
-    path('logout_user/', views.log_out)
+    path('logout_user/', views.log_out),
+    path('unique_inn_org/<inn>', views.unique_inn_org)
 ]
