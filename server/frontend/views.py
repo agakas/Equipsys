@@ -184,12 +184,9 @@ def edit_org(request, org_id):
     print('Аллооооо я тутаааа')
     body = request.POST
     users = list(request.POST.getlist('users'))
-    patch_data = {'name': body['name'], 'inn': body['inn'], 'users': users}
-    #если поле ИНН пустое
-    if not body['inn']:
-        patch_data = {'name': body['name'], 'inn': None, 'users': users}
-    #тут проверяем на уникальность заполненное значение
-    else:
+    patch_data = {'name': body.get('name'), 'inn': body.get('inn'), 'users': users}
+    #если inn непустое должны проверить уникальность
+    if body['inn']:
         current_org = (requests.get("http://127.0.0.1:8000/api/app/organizations/" + str(org_id), cookies=cookies_now,
                                 headers=headers)).json()
         #если данное значение пренадлежит данной компании, то просто пропускаем
