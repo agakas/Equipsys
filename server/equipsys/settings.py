@@ -74,7 +74,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-    ]
+    ],
+    'DATETIME_FORMAT': '%d.%m.%Y %H:%M',
 }
 
 WSGI_APPLICATION = 'equipsys.wsgi.application'
@@ -113,12 +114,12 @@ AUTH_USER_MODEL = 'equip_app.User'
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en-GB'
 
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
+USE_L10N = True
 
-USE_I18N = True
 
 USE_TZ = True
 

@@ -5,11 +5,11 @@ from rest_framework.decorators import api_view
 from .serializers import UserSerializer, OrganizationSerializer, EquipmentSerializer
 from .models import User, Organization, Equipment
 from .permissions import IsAuthOrAnyoneCanCreate  #создавать может кто угодно, а просматривать только админ
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated
 
 
 class AllUserViewSet(viewsets.ModelViewSet):
-    #permission_classes = [IsAuthOrAnyoneCanCreate]
+    permission_classes = [IsAuthOrAnyoneCanCreate]
     queryset = User.objects.all().order_by('id')
     serializer_class = UserSerializer
   # УДАЛИТЬ
@@ -56,15 +56,12 @@ def userView(request):
     return JsonResponse(serializer.data)
 
 def equipOfOrgView(request, id_org):
-    #permission_classes = [IsAuthenticated]
-    print(id_org)
+    permission_classes = [IsAuthenticated]
     def get_queryset(self):
         return Equipment.objects.filter(organization=id_org)
 
-#на удаление
 @api_view(['POST'])
 def login_user(request):
-    permission_classes = [AllowAny]
     username = request.POST['username']
     password = request.POST['password']
     user = authenticate(username=username,  password=password)

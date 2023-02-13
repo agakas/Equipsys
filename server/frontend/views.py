@@ -48,7 +48,6 @@ def sign_up_action(request):
 
 #Выход из аккаунта
 def log_out(request):
-    #logout(request)
     cookies_now = {'csrftoken': request.COOKIES.get('csrftoken'), 'sessionid': request.COOKIES.get('sessionid')}
     response = requests.get('http://127.0.0.1:8000/api/app/logout_user/', cookies=cookies_now)
     return redirect('/')
