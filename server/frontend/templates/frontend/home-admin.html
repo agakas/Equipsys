@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <title>Home</title>
+</head>
+<body>
+    <h2 class="text-left text-primary mt-2 ml-2">Equipsys-admin</h2>
+    <h4 class="text-left text-dark mt-5 ml-2">Мой аккаунт</h2>
+    <div class="card bg-light mt-2 ml-2 mr-2" style="width: auto;">
+        <div class="card-body">
+            <h5 class="card-title">{{my_data.username}}</h5>
+            <div class="row">
+                <div class="col"><h6>Email:</h6></div>
+                <div class="col"><h6>Дата создания аккаунта:</h6></div>
+ 
+                <div class="w-100"></div>
+                <div class="col">{{my_data.email}}</div>
+                <div class="col">{{my_data.created_at}}</div>
+
+            </div>
+            <div class="mt-3">
+                <a class="btn btn-danger text-light" data-toggle="modal" data-target="#delAdminModalCenter">Удалить</a>
+                <a class="btn btn-secondary float-right text-light" data-toggle="modal" data-target="#exitModalCenter">Выход</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="exitModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Выйти из аккаунта</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Вы действительно хотите выйти из аккаунта?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                    <a href="/exit" type="button" class="btn btn-danger">Выйти</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="delAdminModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Удаление аккаунта</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Удалить суперпользователя {{my_data.username}}? Система не предусматривает возможности восстановления учётной записи!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                <a href="/delete_current_user" type="button" class="btn btn-danger">Удалить</a>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <h4 class="text-left text-dark mt-5 ml-2">Все пользователи:</h4>
+    {% for user in all_users %}
+    {% if not user.is_superuser%}
+    <div class="card bg-light mt-2 ml-2 mr-2" style="width: auto;">
+        <div class="card-body">
+            <h5 class="card-title">{{user.username}}</h5>
+            <div class="row">
+                <div class="col"><h6>Email:</h6></div>
+                <div class="col"><h6>Дата создания аккаунта:</h6></div>
+                <div class="col"><h6>Дата последнего изменения аккаунта:</h6></div>
+                <div class="w-100"></div>
+                <div class="col">{{user.email}}</div>
+                <div class="col">{{user.created_at}}</div>
+                <div class="col">{{user.updated_at}}</div>
+            </div>
+            <div class="mt-3">
+                <a class="btn btn-success text-light" data-toggle="modal" data-target="#userToAdminModalCenter_{{user.id}}">Назначить админом</a>
+                <a class="btn btn-danger text-light" data-toggle="modal" data-target="#delAccountModalCenter_{{user.id}}">Удалить</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="userToAdminModalCenter_{{user.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Назначение админом</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Вы действительно хотите назначить {{user.username}} админом?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                    <a href="/user_to_admin/{{user.id}}" type="button" class="btn btn-success">Сделать админом</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="delAccountModalCenter_{{user.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Удадение пользователя {{user.username}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Вы действительно хотите удалить {{user.username}}? Система не предусматривает восстановление аккаунта.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                    <a href="/delete_user_id/{{user.id}}" type="button" class="btn btn-danger">Удалить</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endif %}
+    {% endfor %}
+
+    <h4 class="text-left text-dark mt-5 ml-2">Все организации:</h4>
+    <div class="card mt-2 ml-2 mr-2 mb-5" style="width: auto;">
+    {% for org in all_orgs%}
+    <div class="card bg-light mt-2 ml-2 mr-2" style="width: auto;">
+        <div class="card-body">
+            <h5 class="card-title">{{org.name}}</h5>
+            <div class="row">
+                <div class="col"><h6>ИНН:</h6></div>
+                <div class="col"><h6>Дата создания аккаунта:</h6></div>
+                <div class="col"><h6>Дата последнего изменения аккаунта:</h6></div>
+                <div class="w-100"></div>
+                {% if org.inn == None %}
+                <div class="col">-</div>
+                {% else %}
+                <div class="col">{{org.inn}}</div>
+                {% endif %}
+                <div class="col">{{org.created_at}}</div>
+                <div class="col">{{org.updated_at}}</div>
+            </div>
+            <div class="mt-3">
+                <a class="btn btn-success text-light" data-toggle="modal" data-target="#editOrgModalCenter-{{org.id}}">Изменить</a>
+                <a class="btn btn-danger text-light" data-toggle="modal" data-target="#delOrgModalCenter-{{org.id}}">Удалить</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="delOrgModalCenter-{{org.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Удаление организации</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Удалить организацию {{org.name}}?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                    <a href='/delete_org/{{org.id}}'type="button" class="btn btn-danger">Удалить</a>
+                </div>
+                </div>
+            </div>
+    </div>
+
+    <div class="modal fade" id="editOrgModalCenter-{{org.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Изменение данных организации:</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="edit_form_org_{{org.id}}", method="post">
+
+                {% csrf_token %}
+
+                <div class="alert alert-danger" id="inn_reuse_edit_alert_{{org.id}}" style="display: none">
+                        ИНН уже существует в базе или введён неправильный формат. Оставьте поле пустым или заполните 10 или 13 цифр.
+                </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="recipient-name-edit_{{org.id}}" class="col-form-label">Название:</label>
+                            <input type="text" class="form-control" value="{{org.name}}" id="recipient-name-edit_{{org.id}}" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-inn-edit_{{org.id}}" class="col-form-label">ИНН:</label>
+                            <input type="text" class="form-control"{% if org.inn != None %} value="{{org.inn}}" {% endif%} id="recipient-inn-edit_{{org.id}}" name="inn">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-users-edit_{{org.id}}" class="col-form-label">Пользователи:</label>
+                            <select id="recipient-users-edit_{{org.id}}" name="users" size="3" multiple>
+                                {% for user in all_users %}
+                                    {% if not user.is_superuser %}
+                                        {% if user.id in org.users %}
+                                        <option selected value="{{user.id}}">{{user.username}}</option>
+                                        {% else %}
+                                        <option value="{{user.id}}">{{user.username}}</option>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                        <button type="submit" class="btn btn-success">Изменить</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+    </div>
+    
+
+    <script>
+    $("#edit_form_org_{{org.id}}").on("submit", function(){
+        $.ajax({
+            type: 'POST',
+            url: '/edit_form_org/{{org.id}}',
+            data: $(this).serialize(),
+            success: function(data){
+                location.reload(); 
+            },
+            error: function(data){
+                $("#inn_reuse_edit_alert_{{org.id}}").show();
+            }
+        });
+    return false;
+    });
+    </script>
+
+    {% endfor %}
+    <div class="mt-3">
+                <a class="btn btn-success mb-2 ml-2 text-light" data-toggle="modal" data-target="#addOrgModalCenter">Добавить организацию</a>
+    </div>
+    <div class="modal fade" id="addOrgModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Добавление организации:</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="add_form_org", method="post">
+
+                {% csrf_token %}
+
+                <div class="alert alert-danger" id="add_org_reuse" style="display: none">
+                        ИНН уже существует в базе или введён неправильный формат. Оставьте поле пустым или заполните 10 или 13 цифр.
+                </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="recipient-name-add" class="col-form-label">Название:</label>
+                            <input type="text" class="form-control" id="recipient-name-add" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-inn-add" class="col-form-label">ИНН:</label>
+                            <input type="text" class="form-control" id="recipient-inn-add" name="inn">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-users-add" class="col-form-label">Пользователи:</label>
+                            <select id="recipient-users-add" name="users" size="3" multiple>
+                                {% for user in all_users %}
+                                    {% if not user.is_superuser %}
+                                        <option value="{{user.id}}">{{user.username}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                        <button type="submit" class="btn btn-success">Добавить</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+    </div>
+
+    </div>
+    
+<script>
+
+$("#add_form_org").on("submit", function(){
+	$.ajax({
+        type: 'POST',
+		url: '/add_org/',
+		data: $(this).serialize(),
+		success: function(data){
+            location.reload(); 
+		},
+        error: function(data){
+            $("#add_org_reuse").show();
+        }
+	});
+return false;
+});
+</script>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</html>

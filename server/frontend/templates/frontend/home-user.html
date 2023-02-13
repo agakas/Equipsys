@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <title>Home</title>
+</head>
+<body>
+    <h2 class="text-left text-primary mt-2 ml-2">Equipsys</h2>
+    <h2 class="text-left text-dark mt-5 ml-2">Мой аккаунт</h2>
+    <div class="card bg-light mt-2 ml-2 mr-2" style="width: auto;">
+        <div class="card-body">
+            <h5 class="card-title">{{my_data.username}}</h5>
+            <div class="row">
+                <div class="col"><h6>Email:</h6></div>
+                <div class="col"><h6>Дата создания аккаунта:</h6></div>
+                <div class="col"><h6>Дата последнего изменения аккаунта:</h6></div>
+                <div class="w-100"></div>
+                <div class="col">{{my_data.email}}</div>
+                <div class="col">{{my_data.created_at}}</div>
+                <div class="col">{{my_data.updated_at}}</div>
+            </div>
+            <div class="mt-3">
+                <a class="btn btn-primary text-light" data-toggle="modal" data-target="#editUserModalCenter">Изменить</a>
+                <a class="btn btn-danger text-light" data-toggle="modal" data-target="#delAccountModalCenter">Удалить</a>
+                <a class="btn btn-secondary float-right text-light" data-toggle="modal" data-target="#exitModalCenter">Выход</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exitModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Выйти из аккаунта</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Вы действительно хотите выйти из аккаунта?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                    <a href="/exit" type="button" class="btn btn-danger">Выйти</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="delAccountModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Удаление аккаунта</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Удалить аккаунт {{my_data.username}}? Система не предусматривает возможности восстановления учётной записи!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                <a href="/delete_current_user" type="button" class="btn btn-danger">Удалить</a>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="editUserModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form id="edit_form_account">
+            {% csrf_token %}
+            <div class="modal-header">
+                <h5 class="modal-title" >Изменение данных аккаунта</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="alert alert-danger" id="login_reuse_alert" style="display: none">
+                Логин уже используется!
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="recipient-username" class="col-form-label">Логин:</label>
+                    <input type="text" class="form-control" value="{{my_data.username}}" id="recipient-username" name="username">
+                </div>
+                <div class="form-group">
+                    <label for="recipient-password" class="col-form-label">Пароль:</label>
+                    <input type="password" class="form-control" id="recipient-password" name="password">
+                </div>
+                <div class="form-group">
+                    <label for="recipient-email" class="col-form-label">Email:</label>
+                    <input type="email" class="form-control" value="{{my_data.email}}" id="recipient-email" name="email">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                <button type="submit" class="btn btn-success">Изменить</button>
+            </div>
+            </form>
+        </div>
+        </div>
+    </div>
+
+    <h4 class="text-left text-dark mt-5 ml-2">Мои организации:</h4>
+    {% for org in current_organizations%}
+    <div class="card mt-2 ml-2 mr-2 mb-5" style="width: auto;">
+        <div class="card-body bg-light">
+            <h5 class="card-title">{{org.name}}</h5>
+            <div class="row">
+                <div class="col"><h6>ИНН:</h6></div>
+                <div class="col"><h6>Дата создания организации:</h6></div>
+                <div class="col"><h6>Дата последнего изменения организации:</h6></div>
+                <div class="w-100"></div>
+                {% if org.inn == None %}
+                <div class="col">-</div>
+                {% else %}
+                <div class="col">{{org.inn}}</div>
+                {% endif %}
+                <div class="col">{{org.created_at}}</div>
+                <div class="col">{{org.updated_at}}</div>
+            </div>
+        </div>
+        <h4 class="text-left text-dark mt-2 ml-2">Оборудование организации</h4>
+        <div class="card  mt-2 ml-2 mr-2" style="width: auto;">
+        {% for equipment in org.equipments %}
+
+        <div class="card-body bg-secondary mb-2">
+            <div class="row text-light">
+                <div class="col"><h6>Серийный номер:</h6></div>
+                <div class="col"><h6>Дата внесения оборудования:</h6></div>
+                <div class="col"><h6>Дата последнего изменения оборудования:</h6></div>
+                <div class="w-100"></div>
+                <div class="col">{{equipment.serial}}</div>
+                <div class="col">{{equipment.created_at}}</div>
+                <div class="col">{{equipment.updated_at}}</div>
+            </div>
+            <div class="mt-3">
+                <a class="btn btn-primary text-light" data-toggle="modal" data-target="#editEquipModalCenter-{{equipment.id}}">Изменить</a>
+                <a class="btn btn-danger text-light" data-toggle="modal" data-target="#delEquipModalCenter-{{equipment.id}}">Удалить</a>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="delEquipModalCenter-{{equipment.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Удаление оборудования</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Удалить оборудование?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                    <a href='/del_equip/{{equipment.id}}'type="button" class="btn btn-danger">Удалить</a>
+                </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="editEquipModalCenter-{{equipment.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Изменение данных оборудования:</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="edit_form_equip_{{equipment.id}}", method="post">
+
+                {% csrf_token %}
+
+                <div class="alert alert-danger" id="serial_reuse_edit_alert_{{equipment.id}}" style="display: none">
+                        Номер уже существует или введён неверный формат (10 символов)!
+                </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="recipient-serial-edit_{{equipment.id}}" class="col-form-label">Серийный номер:</label>
+                            <input type="text" class="form-control" value="{{equipment.serial}}" id="recipient-serial-edit_{{equipment.id}}" name="serial" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+                        <button type="submit" class="btn btn-success">Изменить</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $("#edit_form_equip_{{equipment.id}}").on("submit", function(){
+            $.ajax({
+                type: 'POST',
+                url: '/edit_equip/{{equipment.id}}',
+                data: $(this).serialize(),
+                success: function(data){
+                    location.reload(); 
+                },
+                error: function(data){
+                    $("#serial_reuse_edit_alert_{{equipment.id}}").show();
+                }
+            });
+            return false;
+            });
+        </script>
+
+
+            {% endfor %}
+        <div class="mt-3">
+                <a class="btn btn-success mb-2 text-light" data-toggle="modal" data-target="#addEquipModalCenterOfOrg-{{org.id}}">Добавить</a>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addEquipModalCenterOfOrg-{{org.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Добавление оборудования в {{org.name}}:</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="add_form_equip_{{org.id}}" method="post">
+        {% csrf_token %}
+
+        <div class="alert alert-danger" id="serial_reuse_alert_{{org.id}}" style="display: none">
+                Номер уже существует или введён неверный формат (10 символов)!
+        </div>
+      <div class="modal-body">
+          <div class="form-group">
+            <label for="recipient-serial-add_{{org.id}}" class="col-form-label">Серийный номер:</label>
+            <input type="text" class="form-control" id="recipient-serial-add_{{org.id}}" name="serial" required>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Назад</button>
+        <button type="submit" class="btn btn-success">Добавить</button>
+      </div>
+    </form>
+    </div>
+    </div>
+    </div>
+
+    </div>
+
+
+<script>
+    $("#add_form_equip_{{org.id}}").on("submit", function(){
+	$.ajax({
+        type: 'POST',
+		url: '/add_equip_of_org/{{org.id}}',
+		data: $(this).serialize(),
+		success: function(data){
+            location.reload(); 
+		},
+        error: function(data){
+            $("#serial_reuse_alert_{{org.id}}").show();
+        }
+	});
+    return false;
+    });
+</script>
+
+    {% endfor %}
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script>
+
+$("#edit_form_account").on("submit", function(){
+	$.ajax({
+        type: 'POST',
+		url: '/edit_current_user',
+		data: $(this).serialize(),
+		success: function(data){
+            location.reload(); 
+		},
+        error: function(data){
+            $("#login_reuse_alert").show();
+        }
+	});
+return false;
+});
+</script>
+
+</body>
+
+</html>

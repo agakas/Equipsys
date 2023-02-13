@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-+8g$)x&a^2osxzu_(il(bfooe$o-r1q-ugvt6nvn@*(l!-nc*z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'equip_app'
+    'equip_app',
+    'frontend'
 ]
 
 MIDDLEWARE = [
@@ -68,6 +69,14 @@ TEMPLATES = [
         },
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # 'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DATETIME_FORMAT': '%d.%m.%Y %H:%M',
+}
 
 WSGI_APPLICATION = 'equipsys.wsgi.application'
 
@@ -105,11 +114,12 @@ AUTH_USER_MODEL = 'equip_app.User'
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en-GB'
 
-TIME_ZONE = 'UTC'
 
-USE_I18N = True
+TIME_ZONE = 'Europe/Moscow'
+USE_L10N = True
+
 
 USE_TZ = True
 
